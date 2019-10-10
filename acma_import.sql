@@ -31,7 +31,7 @@ create table acma.access_area(
  AREA_NAME              VARCHAR(256),
  AREA_CATEGORY          DOUBLE PRECISION);
  
-COPY acma.access_area FROM '/home/access_area.csv' CSV HEADER
+COPY acma.access_area FROM '/home/access_area.csv' CSV HEADER;
 
 create table acma.antenna(
  ANTENNA_ID		VARCHAR(31),
@@ -47,6 +47,8 @@ create table acma.antenna(
  ANTENNA_TYPE           VARCHAR(240),
  MODEL                  VARCHAR(80),
  MANUFACTURER           VARCHAR(255));
+ 
+COPY acma.access_area FROM '/home/antenna.csv' CSV HEADER;
 
 create table acma.antenna_pattern(
  ANTENNA_ID		VARCHAR(31),
@@ -54,10 +56,14 @@ create table acma.antenna_pattern(
  ANGLE_REF              DOUBLE PRECISION,
  ANGLE                  DOUBLE PRECISION,
  ATTENUATION            DOUBLE PRECISION);
+ 
+COPY acma.access_area FROM '/home/antenna_pattern.csv' CSV HEADER; 
 
 create table acma.antenna_polarity(
  POLARISATION_CODE	VARCHAR(3),
  POLARISATION_TEXT      VARCHAR(50));
+ 
+COPY acma.access_area FROM '/home/antenna_polarity.csv' CSV HEADER; 
 
 create table acma.applic_text_block(
  APTB_ID		DOUBLE PRECISION,
@@ -69,11 +75,15 @@ create table acma.applic_text_block(
  APTB_TEXT              VARCHAR(4000),
  APTB_ITEM              VARCHAR(15));
 
+COPY acma.access_area FROM '/home/applic_text_block.csv' CSV HEADER; 
+
 create table acma.auth_spectrum_area(
  LICENCE_NO  		VARCHAR(63),
  AREA_CODE              VARCHAR(256),
  AREA_NAME              VARCHAR(256),
  AREA_DESCRIPTION       TEXT);
+ 
+COPY acma.access_area FROM '/home/auth_spectrum_area.csv' CSV HEADER; 
 
 create table acma.auth_spectrum_freq(
  LICENCE_NO		VARCHAR(63),
@@ -83,6 +93,8 @@ create table acma.auth_spectrum_freq(
  LW_FREQUENCY_END       DOUBLE PRECISION,
  UP_FREQUENCY_START     DOUBLE PRECISION,
  UP_FREQUENCY_END       DOUBLE PRECISION);
+ 
+COPY acma.access_area FROM '/home/auth_spectrum_freq.csv' CSV HEADER; 
 
 create table acma.bsl(
  BSL_NO                 VARCHAR(31),
@@ -98,14 +110,20 @@ create table acma.bsl(
  REFERENCE              VARCHAR(63)
 );
 
+COPY acma.access_area FROM '/home/bsl.csv' CSV HEADER; 
+
 create table acma.bsl_area(
  AREA_CODE		VARCHAR(256),
  AREA_NAME		VARCHAR(256)
 );
 
+COPY acma.access_area FROM '/home/bsl_area.csv' CSV HEADER; 
+
 create table acma.class_of_station(
  CODE			VARCHAR(31),
  DESCRIPTION            VARCHAR(511));
+ 
+COPY acma.access_area FROM '/home/class_of_station.csv' CSV HEADER; 
 
 create table acma.client(
  CLIENT_NO		DOUBLE PRECISION,
@@ -120,10 +138,14 @@ create table acma.client(
  CAT_ID                 DOUBLE PRECISION,
  CLIENT_TYPE_ID         DOUBLE PRECISION,
  FEE_STATUS_ID          DOUBLE PRECISION);
+ 
+COPY acma.access_area FROM '/home/client.csv' CSV HEADER; 
 
 create table acma.client_type(
  TYPE_ID		DOUBLE PRECISION,
  NAME                   VARCHAR(240));
+ 
+COPY acma.access_area FROM '/home/client_type.csv' CSV HEADER; 
 
 create table acma.device_details(
  SDD_ID   				BIGINT,
@@ -180,15 +202,21 @@ create table acma.device_details(
  DROPTHROUGH_ID                         VARCHAR(63),
  STATION_TYPE                           VARCHAR(511),
  STATION_NAME                           VARCHAR(63));
+ 
+COPY acma.access_area FROM '/home/device_details.csv' CSV HEADER; 
 
 create table acma.fee_status(
  FEE_STATUS_ID		DOUBLE PRECISION,
  FEE_STATUS_TEXT        VARCHAR(100));
+ 
+COPY acma.access_area FROM '/home/fee_status.csv' CSV HEADER; 
 
 create table acma.industry_cat(
  CAT_ID			DOUBLE PRECISION,
  DESCRIPTION            VARCHAR(240),
  NAME                   VARCHAR(120));
+
+COPY acma.access_area FROM '/home/industry_cat.csv' CSV HEADER; 
 
 create table acma.licence(
  LICENCE_NO		VARCHAR(63),
@@ -207,26 +235,38 @@ create table acma.licence(
  SHIP_NAME              VARCHAR(255),
  BSL_NO                 VARCHAR(31));
 
+COPY acma.access_area FROM '/home/licence.csv' CSV HEADER; 
+
 create table acma.licence_service(
  SV_ID			BIGINT,
  SV_NAME                VARCHAR(63));
 
+COPY acma.access_area FROM '/home/licence_service.csv' CSV HEADER; 
+
 create table acma.licence_status(
  STATUS			VARCHAR(10),
  STATUS_TEXT            VARCHAR(511));
+
+COPY acma.access_area FROM '/home/licence_status.csv' CSV HEADER; 
 
 create table acma.licence_subservice(
  SS_ID			BIGINT,
  SV_SV_ID               BIGINT,
  SS_NAME                VARCHAR(95));
 
+COPY acma.access_area FROM '/home/licence_subservice.csv' CSV HEADER; 
+
 create table acma.licensing_area(
  LICENSING_AREA_ID	VARCHAR(31),
  DESCRIPTION            VARCHAR(511));
 
+COPY acma.access_area FROM '/home/licensing_area.csv' CSV HEADER; 
+
 create table acma.nature_of_service(
  CODE			VARCHAR(31),
  DESCRIPTION            VARCHAR(511));
+
+COPY acma.access_area FROM '/home/nature_of_service.csv' CSV HEADER; 
 
 create table acma.reports_text_block(
  RTB_ITEM		VARCHAR(15),
@@ -236,6 +276,8 @@ create table acma.reports_text_block(
  RTB_END_DATE           TIMESTAMP(0),
  RTB_TEXT               VARCHAR(4000));
 
+COPY acma.access_area FROM '/home/reports_text_block.csv' CSV HEADER; 
+
 create table acma.satellite(
  SA_ID			BIGINT,
  SA_SAT_NAME            VARCHAR(31),
@@ -243,6 +285,8 @@ create table acma.satellite(
  SA_SAT_INCEXC          DOUBLE PRECISION,
  SA_SAT_GEO_POS         VARCHAR(1),
  SA_SAT_MERIT_G_T       DOUBLE PRECISION);
+
+COPY acma.access_area FROM '/home/satellite.csv' CSV HEADER; 
 
 create table acma.site(
  SITE_ID		VARCHAR(31),
@@ -255,3 +299,5 @@ create table acma.site(
  SITE_PRECISION         VARCHAR(31),
  ELEVATION              DOUBLE PRECISION,
  HCIS_L2		VARCHAR(31));
+
+COPY acma.access_area FROM '/home/site.csv' CSV HEADER; 
