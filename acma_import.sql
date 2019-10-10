@@ -31,7 +31,7 @@ create table acma.access_area(
  AREA_NAME              VARCHAR(256),
  AREA_CATEGORY          DOUBLE PRECISION);
 
-create acma.table antenna(
+create table acma.antenna(
  ANTENNA_ID		VARCHAR(31),
  GAIN                   DOUBLE PRECISION,
  FRONT_TO_BACK          DOUBLE PRECISION,
