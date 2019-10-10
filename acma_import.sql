@@ -1,37 +1,37 @@
 create schema IF NOT EXISTS acma;
-drop table access_area;
-drop table antenna;
-drop table antenna_pattern;
-drop table antenna_polarity;
-drop table applic_text_block;
-drop table auth_spectrum_area;
-drop table auth_spectrum_freq;
-drop table bsl;
-drop table bsl_area;
-drop table class_of_station;
-drop table client;
-drop table client_type;
-drop table device_details;
-drop table fee_status;
-drop table industry_cat;
-drop table licence;
-drop table licence_service;
-drop table licence_status;
-drop table licence_subservice;
-drop table licensing_area;
-drop table nature_of_service;
-drop table reports_text_block;
-drop table satellite;
-drop table site;
+drop table acma.access_area;
+drop table acma.antenna;
+drop table acma.antenna_pattern;
+drop table acma.antenna_polarity;
+drop table acma.applic_text_block;
+drop table acma.auth_spectrum_area;
+drop table acma.auth_spectrum_freq;
+drop table acma.bsl;
+drop table acma.bsl_area;
+drop table acma.class_of_station;
+drop table acma.client;
+drop table acma.client_type;
+drop table acma.device_details;
+drop table acma.fee_status;
+drop table acma.industry_cat;
+drop table acma.licence;
+drop table acma.licence_service;
+drop table acma.licence_status;
+drop table acma.licence_subservice;
+drop table acma.licensing_area;
+drop table acma.nature_of_service;
+drop table acma.reports_text_block;
+drop table acma.satellite;
+drop table acma.site;
 
 
-create table access_area(
+create table acma.access_area(
  AREA_ID		BIGINT,
  AREA_CODE              VARCHAR(256),
  AREA_NAME              VARCHAR(256),
  AREA_CATEGORY          DOUBLE PRECISION);
 
-create table antenna(
+create acma.table antenna(
  ANTENNA_ID		VARCHAR(31),
  GAIN                   DOUBLE PRECISION,
  FRONT_TO_BACK          DOUBLE PRECISION,
@@ -46,18 +46,18 @@ create table antenna(
  MODEL                  VARCHAR(80),
  MANUFACTURER           VARCHAR(255));
 
-create table antenna_pattern(
+create table acma.antenna_pattern(
  ANTENNA_ID		VARCHAR(31),
  AZ_TYPE                VARCHAR(15),
  ANGLE_REF              DOUBLE PRECISION,
  ANGLE                  DOUBLE PRECISION,
  ATTENUATION            DOUBLE PRECISION);
 
-create table antenna_polarity(
+create table acma.antenna_polarity(
  POLARISATION_CODE	VARCHAR(3),
  POLARISATION_TEXT      VARCHAR(50));
 
-create table applic_text_block(
+create table acma.applic_text_block(
  APTB_ID		DOUBLE PRECISION,
  APTB_TABLE_PREFIX	VARCHAR(30),
  APTB_TABLE_ID          BIGINT,
@@ -67,13 +67,13 @@ create table applic_text_block(
  APTB_TEXT              VARCHAR(4000),
  APTB_ITEM              VARCHAR(15));
 
-create table auth_spectrum_area(
+create table acma.auth_spectrum_area(
  LICENCE_NO  		VARCHAR(63),
  AREA_CODE              VARCHAR(256),
  AREA_NAME              VARCHAR(256),
  AREA_DESCRIPTION       TEXT);
 
-create table auth_spectrum_freq(
+create table acma.auth_spectrum_freq(
  LICENCE_NO		VARCHAR(63),
  AREA_CODE              VARCHAR(256),
  AREA_NAME              VARCHAR(256),
@@ -82,7 +82,7 @@ create table auth_spectrum_freq(
  UP_FREQUENCY_START     DOUBLE PRECISION,
  UP_FREQUENCY_END       DOUBLE PRECISION);
 
-create table bsl(
+create table acma.bsl(
  BSL_NO                 VARCHAR(31),
  MEDIUM_CATEGORY        VARCHAR(4000),
  REGION_CATEGORY        VARCHAR(4000),
@@ -96,16 +96,16 @@ create table bsl(
  REFERENCE              VARCHAR(63)
 );
 
-create table bsl_area(
+create table acma.bsl_area(
  AREA_CODE		VARCHAR(256),
  AREA_NAME		VARCHAR(256)
 );
 
-create table class_of_station(
+create table acma.class_of_station(
  CODE			VARCHAR(31),
  DESCRIPTION            VARCHAR(511));
 
-create table client(
+create table acma.client(
  CLIENT_NO		DOUBLE PRECISION,
  LICENCEE               VARCHAR(201),
  TRADING_NAME           VARCHAR(100),
@@ -119,11 +119,11 @@ create table client(
  CLIENT_TYPE_ID         DOUBLE PRECISION,
  FEE_STATUS_ID          DOUBLE PRECISION);
 
-create table client_type(
+create table acma.client_type(
  TYPE_ID		DOUBLE PRECISION,
  NAME                   VARCHAR(240));
 
-create table device_details(
+create table acma.device_details(
  SDD_ID   				BIGINT,
  LICENCE_NO                             VARCHAR(63),
  DEVICE_REGISTRATION_IDENTIFIER         VARCHAR(63),
@@ -179,16 +179,16 @@ create table device_details(
  STATION_TYPE                           VARCHAR(511),
  STATION_NAME                           VARCHAR(63));
 
-create table fee_status(
+create table acma.fee_status(
  FEE_STATUS_ID		DOUBLE PRECISION,
  FEE_STATUS_TEXT        VARCHAR(100));
 
-create table industry_cat(
+create table acma.industry_cat(
  CAT_ID			DOUBLE PRECISION,
  DESCRIPTION            VARCHAR(240),
  NAME                   VARCHAR(120));
 
-create table licence(
+create table acma.licence(
  LICENCE_NO		VARCHAR(63),
  CLIENT_NO              DOUBLE PRECISION,
  SV_ID                  BIGINT,
@@ -205,28 +205,28 @@ create table licence(
  SHIP_NAME              VARCHAR(255),
  BSL_NO                 VARCHAR(31));
 
-create table licence_service(
+create table acma.licence_service(
  SV_ID			BIGINT,
  SV_NAME                VARCHAR(63));
 
-create table licence_status(
+create table acma.licence_status(
  STATUS			VARCHAR(10),
  STATUS_TEXT            VARCHAR(511));
 
-create table licence_subservice(
+create table acma.licence_subservice(
  SS_ID			BIGINT,
  SV_SV_ID               BIGINT,
  SS_NAME                VARCHAR(95));
 
-create table licensing_area(
+create table acma.licensing_area(
  LICENSING_AREA_ID	VARCHAR(31),
  DESCRIPTION            VARCHAR(511));
 
-create table nature_of_service(
+create table acma.nature_of_service(
  CODE			VARCHAR(31),
  DESCRIPTION            VARCHAR(511));
 
-create table reports_text_block(
+create table acma.reports_text_block(
  RTB_ITEM		VARCHAR(15),
  RTB_CATEGORY           VARCHAR(255),
  RTB_DESCRIPTION        VARCHAR(255),
@@ -234,7 +234,7 @@ create table reports_text_block(
  RTB_END_DATE           TIMESTAMP(0),
  RTB_TEXT               VARCHAR(4000));
 
-create table satellite(
+create table acma.satellite(
  SA_ID			BIGINT,
  SA_SAT_NAME            VARCHAR(31),
  SA_SAT_LONG_NOM        DOUBLE PRECISION,
@@ -242,7 +242,7 @@ create table satellite(
  SA_SAT_GEO_POS         VARCHAR(1),
  SA_SAT_MERIT_G_T       DOUBLE PRECISION);
 
-create table site(
+create table acma.site(
  SITE_ID		VARCHAR(31),
  LATITUDE               DOUBLE PRECISION,
  LONGITUDE              DOUBLE PRECISION,
