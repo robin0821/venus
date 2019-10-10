@@ -30,6 +30,8 @@ create table acma.access_area(
  AREA_CODE              VARCHAR(256),
  AREA_NAME              VARCHAR(256),
  AREA_CATEGORY          DOUBLE PRECISION);
+ 
+ COPY acma.access_area FROM '/home/access_area.csv' CSV HEADER
 
 create table acma.antenna(
  ANTENNA_ID		VARCHAR(31),
