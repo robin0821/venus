@@ -1,4 +1,4 @@
-create schema [IF NOT EXISTS] acma;
+create schema IF NOT EXISTS acma;
 drop table access_area;
 drop table antenna;
 drop table antenna_pattern;
