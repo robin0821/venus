@@ -23,6 +23,7 @@ drop table acma.nature_of_service;
 drop table acma.reports_text_block;
 drop table acma.satellite;
 drop table acma.site;
+drop materialized view acma.wireless
 
 
 create table acma.access_area(
