@@ -317,4 +317,3 @@ as
 	where st.geom is not null;
 	
 create index on acma.wireless using GIST(geom);
-refresh materialized view acma.wireless;
