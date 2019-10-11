@@ -301,3 +301,6 @@ create table acma.site(
  HCIS_L2		VARCHAR(31));
 
 COPY acma.site FROM '/home/site.csv' CSV HEADER; 
+
+ALTER TABLE acma.site ADD COLUMN geom geometry(Point, 4326);
+UPDATE acma.site SET geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
