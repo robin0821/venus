@@ -1,29 +1,28 @@
 create schema IF NOT EXISTS acma;
-drop table acma.access_area;
-drop table acma.antenna;
-drop table acma.antenna_pattern;
-drop table acma.antenna_polarity;
-drop table acma.applic_text_block;
-drop table acma.auth_spectrum_area;
-drop table acma.auth_spectrum_freq;
-drop table acma.bsl;
-drop table acma.bsl_area;
-drop table acma.class_of_station;
-drop table acma.client;
-drop table acma.client_type;
-drop table acma.device_details;
-drop table acma.fee_status;
-drop table acma.industry_cat;
-drop table acma.licence;
-drop table acma.licence_service;
-drop table acma.licence_status;
-drop table acma.licence_subservice;
-drop table acma.licensing_area;
-drop table acma.nature_of_service;
-drop table acma.reports_text_block;
-drop table acma.satellite;
-drop table acma.site;
-
+drop table acma.access_area CASCADE;
+drop table acma.antenna CASCADE;
+drop table acma.antenna_pattern CASCADE;
+drop table acma.antenna_polarity CASCADE;
+drop table acma.applic_text_block CASCADE;
+drop table acma.auth_spectrum_area CASCADE;
+drop table acma.auth_spectrum_freq CASCADE;
+drop table acma.bsl CASCADE;
+drop table acma.bsl_area CASCADE;
+drop table acma.class_of_station CASCADE;
+drop table acma.client CASCADE;
+drop table acma.client_type CASCADE;
+drop table acma.device_details CASCADE;
+drop table acma.fee_status CASCADE;
+drop table acma.industry_cat CASCADE;
+drop table acma.licence CASCADE;
+drop table acma.licence_service CASCADE;
+drop table acma.licence_status CASCADE;
+drop table acma.licence_subservice CASCADE;
+drop table acma.licensing_area CASCADE;
+drop table acma.nature_of_service CASCADE;
+drop table acma.reports_text_block CASCADE;
+drop table acma.satellite CASCADE;
+drop table acma.site CASCADE;
 
 create table acma.access_area(
  AREA_ID		BIGINT,
