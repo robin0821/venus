@@ -304,3 +304,16 @@ COPY acma.site FROM '/home/site.csv' CSV HEADER;
 
 ALTER TABLE acma.site ADD COLUMN geom geometry(Point, 4326);
 UPDATE acma.site SET geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
+
+create materialized view if not exists acma.wireless
+as 
+	select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, st.geom, st.latitude, st.longitude,
+	lic.licence_type_name, lic.licence_category_name,
+	clt.licencee, clt.abn, cltt.name
+	from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+	left join acma.licence as lic on lic.licence_no = dev.licence_no
+	left join acma.client as clt on lic.client_no = clt.client_no
+	left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+	where st.geom is not null;
+	
+create index on acma.wireless using GIST(geom);
