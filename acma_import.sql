@@ -317,3 +317,4 @@ as
 	where st.geom is not null;
 	
 create index on acma.wireless using GIST(geom);
+create index wireless_idx on acma.wireless(licencee);
