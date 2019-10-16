@@ -307,7 +307,7 @@ UPDATE acma.site SET geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 create materialized view if not exists acma.wireless
 as 
 	select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
-	st.geom, st.latitude, st.longitude, st.site_precision,
+	st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name,
 	lic.licence_type_name, lic.licence_category_name,
 	clt.licencee, clt.abn, cltt.name
 	from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
