@@ -310,7 +310,7 @@ as
 		(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
 		st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
 		lic.licence_type_name, lic.licence_category_name,
-		clt.client_no, clt.licencee, clt.abn, cltt.name as licencee_type
+		clt.licencee, clt.abn, cltt.name as licencee_type
 		from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
 		left join acma.licence as lic on lic.licence_no = dev.licence_no
 		left join acma.client as clt on lic.client_no = clt.client_no
@@ -321,7 +321,7 @@ as
 			(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
 			st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
 			lic.licence_type_name, lic.licence_category_name,
-			clt.client_no, clt.licencee, clt.abn, cltt.name as licencee_type
+			clt.licencee, clt.abn, cltt.name as licencee_type
 			from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
 			left join acma.licence as lic on lic.licence_no = dev.licence_no
 			left join acma.client as clt on lic.client_no = clt.client_no
