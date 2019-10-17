@@ -332,3 +332,61 @@ as
 	
 create index on acma.wireless_devices using GIST(geom);
 create index wireless_devices_idx on acma.wireless_devices(licencee);
+
+create materialized view if not exists acma.wireless_licencees
+as
+	select distinct t3.abn, t3.frequency, t3.bandwidth, t3.height, t3.geom, t3.latitude, t3.longitude, t3.site_id, t3.site_addr, t3.licence_type_name,
+	t3.licence_category_name, t3.licencee, t3.licencee_type, t3.assignments, t4.device_count from
+		(select t1.*, t2.assignments from 
+			(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
+			st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+			lic.licence_type_name, lic.licence_category_name,
+			clt.licencee, clt.abn, cltt.name as licencee_type
+			from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+			left join acma.licence as lic on lic.licence_no = dev.licence_no
+			left join acma.client as clt on lic.client_no = clt.client_no
+			left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+			where st.geom is not null and clt.abn is not null) as t1
+		left join 
+			(select t1.site_id, count(distinct t1.abn) as assignments from
+				(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
+				st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+				lic.licence_type_name, lic.licence_category_name,
+				clt.licencee, clt.abn, cltt.name as licencee_type
+				from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+				left join acma.licence as lic on lic.licence_no = dev.licence_no
+				left join acma.client as clt on lic.client_no = clt.client_no
+				left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+				where st.geom is not null and clt.abn is not null) as t1
+			group by t1.site_id) as t2
+		on t1.site_id = t2.site_id) as t3
+		inner join 
+		(select t3.abn, t3.site_id, count(t3.*) as device_count from
+			(select t1.*, t2.assignments from 
+				(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
+				st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+				lic.licence_type_name, lic.licence_category_name,
+				clt.licencee, clt.abn, cltt.name as licencee_type
+				from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+				left join acma.licence as lic on lic.licence_no = dev.licence_no
+				left join acma.client as clt on lic.client_no = clt.client_no
+				left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+				where st.geom is not null and clt.abn is not null) as t1
+			left join 
+				(select t1.site_id, count(distinct t1.abn) as assignments from
+					(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
+					st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+					lic.licence_type_name, lic.licence_category_name,
+					clt.licencee, clt.abn, cltt.name as licencee_type
+					from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+					left join acma.licence as lic on lic.licence_no = dev.licence_no
+					left join acma.client as clt on lic.client_no = clt.client_no
+					left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+					where st.geom is not null and clt.abn is not null) as t1
+				group by t1.site_id) as t2
+			on t1.site_id = t2.site_id) as t3
+		group by t3.abn, t3.site_id) as t4
+		on t3.abn = t4.abn and t3.site_id = t4.site_id;
+
+create index on acma.wireless_licencees using GIST(geom);
+create index wireless_licencees_idx on acma.wireless_licencees(licencee);
