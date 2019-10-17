@@ -327,6 +327,8 @@ as
 			left join acma.client as clt on lic.client_no = clt.client_no
 			left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
 			where st.geom is not null and clt.abn is not null) as t1
+	 	where t1.licence_type_name ilike any (array['Land Mobile', 'Fixed', 'Radiodetermination', 'Outpost', 'PTS', 'Datacasting Service Licence',
+													   'Scientific', 'Fixed Receive', 'Spectrum', 'Space', 'PTS 900 MHz', 'Defence', 'Defence Receive'])
 		group by t1.site_id) as t2
 	on t1.site_id = t2.site_id;
 	
@@ -385,6 +387,8 @@ as
 					where st.geom is not null and clt.abn is not null) as t1
 				group by t1.site_id) as t2
 			on t1.site_id = t2.site_id) as t3
+	 	where t3.licence_type_name ilike any (array['Land Mobile', 'Fixed', 'Radiodetermination', 'Outpost', 'PTS', 'Datacasting Service Licence',
+													   'Scientific', 'Fixed Receive', 'Spectrum', 'Space', 'PTS 900 MHz', 'Defence', 'Defence Receive'])
 		group by t3.abn, t3.site_id) as t4
 		on t3.abn = t4.abn and t3.site_id = t4.site_id;
 
