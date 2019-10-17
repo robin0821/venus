@@ -389,7 +389,7 @@ as
 			on t1.site_id = t2.site_id) as t3
 	 	where t3.licence_type_name ilike any (array['Land Mobile', 'Fixed', 'Radiodetermination', 'Outpost', 'PTS', 'Datacasting Service Licence',
 													   'Scientific', 'Fixed Receive', 'Spectrum', 'Space', 'PTS 900 MHz', 'Defence', 'Defence Receive'])
-		group by t3.abn, t3.site_id) as t4
+		group by t3.abn, t3.site_id, t3.frequency) as t4
 		on t3.abn = t4.abn and t3.site_id = t4.site_id;
 
 create index on acma.wireless_licencees using GIST(geom);
