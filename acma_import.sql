@@ -315,9 +315,9 @@ as
 		left join acma.licence as lic on lic.licence_no = dev.licence_no
 		left join acma.client as clt on lic.client_no = clt.client_no
 		left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-		where st.geom is not null) as t1
+		where st.geom is not null and clt.abn is not null) as t1
 	left join 
-		(select t1.site_id, count(distinct t1.client_no) as assignments from
+		(select t1.site_id, count(distinct t1.abn) as assignments from
 			(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
 			st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
 			lic.licence_type_name, lic.licence_category_name,
