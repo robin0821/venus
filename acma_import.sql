@@ -306,15 +306,29 @@ UPDATE acma.site SET geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 
 create materialized view if not exists acma.wireless
 as 
-	select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
-	st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
-	lic.licence_type_name, lic.licence_category_name,
-	clt.licencee, clt.abn, cltt.name as licencee_type
-	from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
-	left join acma.licence as lic on lic.licence_no = dev.licence_no
-	left join acma.client as clt on lic.client_no = clt.client_no
-	left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-	where st.geom is not null;
+	select t1.*, t2.assignments from 
+		(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
+		st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+		lic.licence_type_name, lic.licence_category_name,
+		clt.client_no, clt.licencee, clt.abn, cltt.name as licencee_type
+		from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+		left join acma.licence as lic on lic.licence_no = dev.licence_no
+		left join acma.client as clt on lic.client_no = clt.client_no
+		left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+		where st.geom is not null) as t1
+	left join 
+		(select t1.site_id, count(distinct t1.client_no) as assignments from
+			(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
+			st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+			lic.licence_type_name, lic.licence_category_name,
+			clt.client_no, clt.licencee, clt.abn, cltt.name as licencee_type
+			from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+			left join acma.licence as lic on lic.licence_no = dev.licence_no
+			left join acma.client as clt on lic.client_no = clt.client_no
+			left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+			where st.geom is not null) as t1
+		group by t1.site_id) as t2
+	on t1.site_id = t2.site_id
 	
 create index on acma.wireless using GIST(geom);
 create index wireless_idx on acma.wireless(licencee);
