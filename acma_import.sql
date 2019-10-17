@@ -328,7 +328,7 @@ as
 			left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
 			where st.geom is not null) as t1
 		group by t1.site_id) as t2
-	on t1.site_id = t2.site_id
+	on t1.site_id = t2.site_id;
 	
 create index on acma.wireless using GIST(geom);
 create index wireless_idx on acma.wireless(licencee);
