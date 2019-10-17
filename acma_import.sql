@@ -326,7 +326,7 @@ as
 			left join acma.licence as lic on lic.licence_no = dev.licence_no
 			left join acma.client as clt on lic.client_no = clt.client_no
 			left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-			where st.geom is not null) as t1
+			where st.geom is not null and clt.abn is not null) as t1
 		group by t1.site_id) as t2
 	on t1.site_id = t2.site_id;
 	
