@@ -304,7 +304,7 @@ COPY acma.site FROM '/home/site.csv' CSV HEADER;
 ALTER TABLE acma.site ADD COLUMN geom geometry(Point, 4326);
 UPDATE acma.site SET geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 
-create materialized view if not exists acma.wireless
+create materialized view if not exists acma.wireless_devices
 as 
 	select t1.*, t2.assignments from 
 		(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
@@ -330,5 +330,5 @@ as
 		group by t1.site_id) as t2
 	on t1.site_id = t2.site_id;
 	
-create index on acma.wireless using GIST(geom);
-create index wireless_idx on acma.wireless(licencee);
+create index on acma.wireless_devices using GIST(geom);
+create index wireless_devices_idx on acma.wireless_devices(licencee);
