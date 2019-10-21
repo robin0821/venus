@@ -23,6 +23,9 @@ drop table acma.nature_of_service CASCADE;
 drop table acma.reports_text_block CASCADE;
 drop table acma.satellite CASCADE;
 drop table acma.site CASCADE;
+drop table acma.tmp_device CASCADE;
+drop table acma.tmp_assignments CASCADE;
+drop table acma.tmp_device_count CASCADE;
 
 create table acma.access_area(
  AREA_ID		BIGINT,
@@ -304,6 +307,30 @@ COPY acma.site FROM '/home/site.csv' CSV HEADER;
 ALTER TABLE acma.site ADD COLUMN geom geometry(Point, 4326);
 UPDATE acma.site SET geom = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 
+create table acma.tmp_device as
+	(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.emission, dev.height, dev.authorisation_date,
+			st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+			lic.licence_type_name, lic.licence_category_name,
+			clt.licencee, clt.abn, cltt.name as licencee_type
+	from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
+	left join acma.licence as lic on lic.licence_no = dev.licence_no
+	left join acma.client as clt on lic.client_no = clt.client_no
+	left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
+	where st.geom is not null and clt.abn is not null
+		and licence_type_name ilike any (array['Land Mobile', 'Fixed', 'Radiodetermination', 'Outpost', 'PTS', 'Datacasting Service Licence',
+												'Scientific', 'Fixed Receive', 'Spectrum', 'PTS 900 MHz', 'Defence', 'Defence Receive']))
+
+
+create table acma.tmp_assignments
+as
+	select t1.site_id, count(distinct t1.abn) as site_assignments 
+	from acma.tmp_device as t1
+	group by t1.site_id
+
+create table acma.tmp_device_count as 
+	select dev.frequency, dev.bandwidth, dev.authorisation_date, dev.site_id, dev.abn, count(*) as same_device_count from acma.tmp_device as dev
+	group by dev.frequency, dev.bandwidth, dev.authorisation_date, dev.site_id, dev.abn
+
 create materialized view if not exists acma.wireless_devices
 as 
 	select t1.*, t2.assignments from 
@@ -335,62 +362,14 @@ as
 create index on acma.wireless_devices using GIST(geom);
 create index wireless_devices_idx on acma.wireless_devices(licencee);
 
-create materialized view if not exists acma.wireless_licencees
-as
-	select distinct t3.abn, t3.frequency, t3.bandwidth, t3.emission, t3.height, t3.geom, t3.latitude, t3.longitude, t3.site_id, t3.site_addr, t3.licence_type_name,
-	t3.licence_category_name, t3.licencee, t3.licencee_type, t3.assignments, t4.device_count from
-		(select t1.*, t2.assignments from 
-			(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.emission, dev.height, 
-			st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
-			lic.licence_type_name, lic.licence_category_name,
-			clt.licencee, clt.abn, cltt.name as licencee_type
-			from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
-			left join acma.licence as lic on lic.licence_no = dev.licence_no
-			left join acma.client as clt on lic.client_no = clt.client_no
-			left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-			where st.geom is not null and clt.abn is not null) as t1
-		left join 
-			(select t1.site_id, count(distinct t1.abn) as assignments from
-				(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
-				st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
-				lic.licence_type_name, lic.licence_category_name,
-				clt.licencee, clt.abn, cltt.name as licencee_type
-				from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
-				left join acma.licence as lic on lic.licence_no = dev.licence_no
-				left join acma.client as clt on lic.client_no = clt.client_no
-				left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-				where st.geom is not null and clt.abn is not null) as t1
-			group by t1.site_id) as t2
-		on t1.site_id = t2.site_id) as t3
-		inner join 
-		(select t3.abn, t3.site_id, count(t3.*) as device_count from
-			(select t1.*, t2.assignments from 
-				(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
-				st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
-				lic.licence_type_name, lic.licence_category_name,
-				clt.licencee, clt.abn, cltt.name as licencee_type
-				from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
-				left join acma.licence as lic on lic.licence_no = dev.licence_no
-				left join acma.client as clt on lic.client_no = clt.client_no
-				left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-				where st.geom is not null and clt.abn is not null) as t1
-			left join 
-				(select t1.site_id, count(distinct t1.abn) as assignments from
-					(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
-					st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
-					lic.licence_type_name, lic.licence_category_name,
-					clt.licencee, clt.abn, cltt.name as licencee_type
-					from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
-					left join acma.licence as lic on lic.licence_no = dev.licence_no
-					left join acma.client as clt on lic.client_no = clt.client_no
-					left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-					where st.geom is not null and clt.abn is not null) as t1
-				group by t1.site_id) as t2
-			on t1.site_id = t2.site_id) as t3
-	 	where t3.licence_type_name ilike any (array['Land Mobile', 'Fixed', 'Radiodetermination', 'Outpost', 'PTS', 'Datacasting Service Licence',
-													   'Scientific', 'Fixed Receive', 'Spectrum', 'PTS 900 MHz', 'Defence', 'Defence Receive'])
-		group by t3.abn, t3.site_id, t3.frequency) as t4
-		on t3.abn = t4.abn and t3.site_id = t4.site_id;
-
+create materialized view if not exists acma.wireless_licencees as
+	select distinct on (frequency, bandwidth, authorisation_date, site_id, abn) * from
+	(select dev.frequency, dev.bandwidth, dev.device_type, dev.emission, dev.height, dev.authorisation_date, dev.geom, dev.latitude, dev.longitude,
+			dev.site_id, dev.site_precision, dev.site_addr, dev.licence_type_name, dev.licence_category_name, dev.licencee, dev.abn, dev.licencee_type, 
+			ass.site_assignments, dcnt.same_device_count from acma.tmp_device as dev
+	left join acma.tmp_assignments as ass on dev.site_id = ass.site_id
+	left join acma.tmp_device_count as dcnt on dev.site_id = dcnt.site_id 
+		and dev.abn = dcnt.abn and dev.frequency = dcnt.frequency and dev.bandwidth = dcnt.bandwidth) as comb_table;
+		
 create index on acma.wireless_licencees using GIST(geom);
 create index wireless_licencees_idx on acma.wireless_licencees(licencee);
