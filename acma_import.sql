@@ -337,10 +337,10 @@ create index wireless_devices_idx on acma.wireless_devices(licencee);
 
 create materialized view if not exists acma.wireless_licencees
 as
-	select distinct t3.abn, t3.frequency, t3.bandwidth, t3.height, t3.geom, t3.latitude, t3.longitude, t3.site_id, t3.site_addr, t3.licence_type_name,
+	select distinct t3.abn, t3.frequency, t3.bandwidth, t3.emission, t3.height, t3.geom, t3.latitude, t3.longitude, t3.site_id, t3.site_addr, t3.licence_type_name,
 	t3.licence_category_name, t3.licencee, t3.licencee_type, t3.assignments, t4.device_count from
 		(select t1.*, t2.assignments from 
-			(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
+			(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.emission, dev.height, 
 			st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
 			lic.licence_type_name, lic.licence_category_name,
 			clt.licencee, clt.abn, cltt.name as licencee_type
