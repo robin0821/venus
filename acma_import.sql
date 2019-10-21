@@ -318,18 +318,18 @@ create table acma.tmp_device as
 	left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
 	where st.geom is not null and clt.abn is not null
 		and licence_type_name ilike any (array['Land Mobile', 'Fixed', 'Radiodetermination', 'Outpost', 'PTS', 'Datacasting Service Licence',
-												'Scientific', 'Fixed Receive', 'Spectrum', 'PTS 900 MHz', 'Defence', 'Defence Receive']))
+												'Scientific', 'Fixed Receive', 'Spectrum', 'PTS 900 MHz', 'Defence', 'Defence Receive']));
 
 
 create table acma.tmp_assignments
 as
 	select t1.site_id, count(distinct t1.abn) as site_assignments 
 	from acma.tmp_device as t1
-	group by t1.site_id
+	group by t1.site_id;
 
 create table acma.tmp_device_count as 
 	select dev.frequency, dev.bandwidth, dev.authorisation_date, dev.site_id, dev.abn, count(*) as same_device_count from acma.tmp_device as dev
-	group by dev.frequency, dev.bandwidth, dev.authorisation_date, dev.site_id, dev.abn
+	group by dev.frequency, dev.bandwidth, dev.authorisation_date, dev.site_id, dev.abn;
 
 create materialized view if not exists acma.wireless_devices
 as 
