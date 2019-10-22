@@ -316,9 +316,7 @@ create table acma.tmp_device as
 	left join acma.licence as lic on lic.licence_no = dev.licence_no
 	left join acma.client as clt on lic.client_no = clt.client_no
 	left join acma.client_type as cltt on cltt.type_id = clt.client_type_id
-	where substring(emission, 5, 1) similar to '(A|H|R|J|B|C|F|G|D|W)' and
-		substring(emission, 6, 1) similar to '(1|2|7|8|9)' and
-		substring(emission, 7, 1) similar to '(D|F|W)'
+	where substring(emission, 5, 3) similar to '([A|H|R|J|B|C|F|G|D|W])([1|2|7|8|9])([D|F|W])'
 	);
 	
 create table acma.tmp_entity_count
