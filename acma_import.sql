@@ -26,6 +26,7 @@ drop table acma.site CASCADE;
 drop table acma.tmp_device CASCADE;
 drop table acma.tmp_entity_count CASCADE;
 drop table acma.tmp_assignment_count CASCADE;
+drop table acma.wireless_licencees CASCADE;
 
 create table acma.access_area(
  AREA_ID		BIGINT,
@@ -357,7 +358,7 @@ as
 		group by t1.site_id) as t2
 	on t1.site_id = t2.site_id;
 	
-create materialized view if not exists acma.wireless_licencees as
+create table acma.wireless_licencees as
 	select distinct on (frequency, bandwidth, site_id, abn) * from
 	(select dev.frequency, dev.bandwidth, dev.device_type, dev.emission, dev.height, dev.authorisation_date, dev.geom, dev.latitude, dev.longitude,
 			dev.site_id, dev.site_precision, dev.site_addr, dev.licence_type_name, dev.licence_category_name, dev.licencee, dev.abn, dev.licencee_type, 
@@ -367,3 +368,6 @@ create materialized view if not exists acma.wireless_licencees as
 		
 create index on acma.wireless_licencees using GIST(geom);
 create index wireless_licencees_idx on acma.wireless_licencees(licencee);
+drop table acma.tmp_device;
+drop table acma.tmp_entity_count;
+drop table acma.tmp_site_assignments_count;
