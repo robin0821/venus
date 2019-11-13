@@ -334,7 +334,7 @@ create materialized view if not exists acma.wireless_devices
 as 
 	select t1.*, t2.assignments from 
 		(select dev.device_registration_identifier, dev.frequency, dev.bandwidth, dev.device_type, dev.height, 
-		st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.name as site_addr,
+		st.geom, st.latitude, st.longitude, st.site_precision, st.site_id, st.licensing_area_id, st.name as site_addr,
 		lic.licence_type_name, lic.licence_category_name,
 		clt.licencee, clt.abn, cltt.name as licencee_type
 		from acma.device_details as dev left join acma.site as st on dev.site_id = st.site_id
