@@ -361,7 +361,7 @@ as
 create table acma.wireless_licencees as
 	select distinct on (frequency, bandwidth, site_id, abn) * from
 	(select dev.frequency, dev.bandwidth, dev.device_type, dev.emission, dev.height, dev.authorisation_date, dev.geom, dev.latitude, dev.longitude,
-			dev.site_id, st.licensing_area_id, dev.site_precision, dev.site_addr, dev.licence_type_name, dev.licence_category_name, dev.licencee, dev.abn, dev.licencee_type, 
+			dev.site_id, dev.licensing_area_id, dev.site_precision, dev.site_addr, dev.licence_type_name, dev.licence_category_name, dev.licencee, dev.abn, dev.licencee_type, 
 			ass.site_entity_count, dcnt.site_assignment_count from acma.tmp_device as dev
 	left join acma.tmp_entity_count as ass on dev.site_id = ass.site_id
 	left join acma.tmp_site_assignments_count as dcnt on dev.site_id = dcnt.site_id and dev.abn = dcnt.abn) as comb_table;
