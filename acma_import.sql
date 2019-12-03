@@ -366,10 +366,11 @@ create table acma.wireless_licencees as
 	left join acma.tmp_entity_count as ass on dev.site_id = ass.site_id
 	left join acma.tmp_site_assignments_count as dcnt on dev.site_id = dcnt.site_id and dev.abn = dcnt.abn) as comb_table
 	where site_id is not null;
-		
-ALTER TABLE acma.wireless_licencees ADD COLUMN id SERIAL PRIMARY KEY;
-create index on acma.wireless_licencees using GIST(geom);
-create index wireless_licencees_idx on acma.wireless_licencees(licencee);
+
+CREATE TABLE public.wireless_licencees as (SELECT * FROM acma.wireless_licencees);
+ALTER TABLE public.wireless_licencees ADD COLUMN id SERIAL PRIMARY KEY;
+create index on public.wireless_licencees using GIST(geom);
+create index wireless_licencees_idx on public.wireless_licencees(licencee);
 drop table acma.tmp_device;
 drop table acma.tmp_entity_count;
 drop table acma.tmp_site_assignments_count;
