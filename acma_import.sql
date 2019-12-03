@@ -27,6 +27,7 @@ drop table acma.tmp_device CASCADE;
 drop table acma.tmp_entity_count CASCADE;
 drop table acma.tmp_assignment_count CASCADE;
 drop table acma.wireless_licencees CASCADE;
+drop table public.wireless_licencees CASCADE;
 
 create table acma.access_area(
  AREA_ID		BIGINT,
