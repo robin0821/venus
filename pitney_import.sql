@@ -104,6 +104,14 @@ CREATE TABLE public.customers1905 as (SELECT * FROM public.pitney_tmp);
 CREATE INDEX customers1905_gix ON public.customers1905 USING gist (wkb_geometry);
 CREATE INDEX customers1905_idx ON public.customers1905 USING btree (name, stabb, postcode, formattedaddress, trade_division, employee_count, year_start, sales_volume_us_dollars, ticker_symbol);
 
+DROP TABLE IF EXISTS public.pitney_tmp CASCADE;
+CREATE INDEX customers1905_addr_idx ON public.customers1905 (formattedaddress);
+CREATE INDEX customers1905_lat_idx ON public.customers1905 (latitude);
+CREATE INDEX customers1905_lng_idx ON public.customers1905 (longitude);
+CREATE INDEX customers1905_name_idx ON public.customers1905 (name);
+CREATE INDEX customers1905_rev_idx ON public.customers1905 (sales_volume_us_dollars);
+CREATE INDEX customers1905_employee_idx ON public.customers1905 (employee_count);
+CREATE INDEX customers1905_ste_idx ON public.customers1905 (stabb);
+
 VACUUM FULL public.customers1905;
 ANALYZE public.customers1905;
-DROP TABLE IF EXISTS public.pitney_tmp CASCADE;
