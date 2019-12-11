@@ -1,4 +1,5 @@
 DROP TABLE public.pitney_bowes_pois CASCADE;
+DROP TABLE public.pitney_tmp CASCADE;
 
 CREATE TABLE public.pitney_bowes_pois (
     name character varying,
