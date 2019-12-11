@@ -1,5 +1,5 @@
-DROP TABLE public.pitney_bowes_pois CASCADE;
-DROP TABLE public.pitney_tmp CASCADE;
+DROP TABLE IF EXISTS public.pitney_bowes_pois CASCADE;
+DROP TABLE IF EXISTS public.pitney_tmp CASCADE;
 
 CREATE TABLE public.pitney_bowes_pois (
     name character varying,
@@ -97,7 +97,7 @@ UPDATE public.pitney_tmp SET wkb_geometry = ST_SetSRID(ST_MakePoint(longitude, l
 
 ALTER TABLE public.pitney_tmp ADD COLUMN fid SERIAL PRIMARY KEY;
 
-DROP TABLE public.customers1905 CASCADE;
+DROP TABLE IF EXISTS public.customers1905 CASCADE;
 
 CREATE TABLE public.customers1905 as (SELECT * FROM public.pitney_tmp);
 
@@ -106,3 +106,4 @@ CREATE INDEX customers1905_idx ON public.customers1905 USING btree (name, stabb,
 
 VACUUM FULL public.customers1905;
 ANALYZE public.customers1905;
+DROP TABLE IF EXISTS public.pitney_tmp CASCADE;
