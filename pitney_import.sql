@@ -114,7 +114,7 @@ CREATE INDEX customers1905_employee_idx ON public.customers1905 (employee_count)
 CREATE INDEX customers1905_ste_idx ON public.customers1905 (stabb);
 
 CREATE TABLE public.customer1905_sa2_tmp AS
-SELECT pitney.*, sa2.sa2_16main, sa2.sa2_16name, sa2.sa3_16code, sa2.sa3_16name, sa2.sa4_16code, sa2.sa4_16name, sa2.state as sa2
+SELECT pitney.*, sa2.sa2_16main, sa2.sa2_16name, sa2.sa3_16code, sa2.sa3_16name, sa2.sa4_16code, sa2.sa4_16name, sa2.state
 FROM 
     customers1905 AS pitney, sa2_boundaries sa2
 WHERE ST_Contains( sa2.geom, pitney.wkb_geometry);
