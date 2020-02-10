@@ -113,5 +113,20 @@ CREATE INDEX customers1905_rev_idx ON public.customers1905 (sales_volume_us_doll
 CREATE INDEX customers1905_employee_idx ON public.customers1905 (employee_count);
 CREATE INDEX customers1905_ste_idx ON public.customers1905 (stabb);
 
+CREATE TABLE public.customer1905_sa2_tmp AS
+SELECT pitney.*, sa2.sa2_16main, sa2.sa2_16name, sa2.sa3_16code, sa2.sa3_16name, sa2.sa4_16code, sa2.sa4_16name, sa2.state as sa2
+FROM 
+    customers1905 AS pitney, sa2_boundaries sa2
+WHERE ST_Contains( sa2.geom, pitney.wkb_geometry);
+
+DROP TABLE IF EXISTS public.cutomers_postgis_sa2 CASCADE;
+
+CREATE TABLE public.cutomers_postgis_sa2 as (SELECT * FROM public.customer1905_sa2_tmp);
+
+CREATE INDEX cutomers_postgis_sa2_gix ON public.cutomers_postgis_sa2 USING gist (wkb_geometry);
+CREATE INDEX cutomers_postgis_sa2_idx ON public.cutomers_postgis_sa2 USING btree (name, stabb, postcode, formattedaddress, trade_division, employee_count, year_start, sales_volume_us_dollars, sa2_16main, sa2_16name, sa3_16code, sa3_16name, sa4_16code, sa4_16name);
+
+DROP TABLE IF EXISTS public.customer1905_sa2_tmp CASCADE;
+
 VACUUM FULL public.customers1905;
 ANALYZE public.customers1905;
